@@ -4,7 +4,7 @@
     double sim_prob[n];
     double uncertainty[n];
     double cos_sqr[n];
-    ifstream input("cone.txt");
+    ifstream input("cone_win.txt");
     for(int i = 0; i<n; i++){
         input>>x[i]>>sim_prob[i]>>uncertainty[i]>>cos_sqr[i];
     }
@@ -19,7 +19,7 @@
     gr2->SetLineColor(kBlue);
     mg->Add(gr1, "A*");
     mg->Add(gr2, "AL");
-    mg->SetTitle("0.01KM seperation, 10 per dot; Angle from Z-axis; Survival Percentage");
+    mg->SetTitle("0.01KM seperation, 100 per dot; Angle from Z-axis; Survival Percentage");
     // mg->GetXaxis()->SetTitle("Theta");
     // mg->GetYaxis()->SetTitle("Survival percentage"); 
     mg->Draw("A");
