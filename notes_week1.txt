@@ -1,0 +1,62 @@
+2022/06/20
+Feyman's diagram. Integral. Magneticmoment of Muons
+Rate to degree(degree from zenith) chart
+Flat Earth approximation.
+    Muons made from a plane in detector detectable area.
+        How many survives.
+            high energy -> lives longer, low -> live shorter
+            Gamma factor -> lorentz transformation, time in muon frame
+        Monte Carlo method: ex. finding pi by generating rand. numbers
+            When a results cannot be calculated mathematically or physically
+        Time dialation and length contraction. Muon frame vs observing frame.
+    Energy lost formula.
+
+Todo:
+    Determine if a muon survives based on a given distance and a given energy level.
+        Practice special relativity.
+        E_tot = gamma m c^2
+        E_rest = m c^2
+        Units in high energy units. (3, 5, 10 GeV: kinetic energy) 
+        Traelling in vacuum.
+
+Meeting time:
+    4:30 p.m. daily.
+
+2022/06/21
+    Histogram, normal distribution
+    Cern Root
+
+    Next step:
+        Expand to 2D:
+            Add x axis
+
+2022/06/22
+    Questions:
+        Am I doing this right lmao. Should each muon survival rate be uniform distribution or normal distribution around theoretical value?
+    John Taylor: Error Analysis
+    To Do:
+        Cern Root, one line probability equation.
+
+2022/06/23
+    Todo:
+        don't connect the lines for simulated data.
+        add error bars to simulated data.
+        convert Horizontal axis to angle
+        cos^2(theta)
+        ANALYTICAL EXPRESSION
+
+2022/06/24
+    Questions:
+        Error? Standard deviation of mean (SDOM) or just Standard deviation?
+        How to calculate error is there's only technically one measurement?
+    Todo:
+        graph using derived expression.
+        error (N)^1/2/N
+        Add statistics in 2D graph.
+        15KM up
+        Geometric acceptance:
+            Cone,
+            Uniformly distributed directions
+        Different telescope angles
+    Think:
+        Better model for muon creation instead of uniformly on a single plane.

@@ -1,0 +1,14 @@
+2022/06/27
+    Binomial distribution apporaches normal distribution when N -> large
+
+    Simulation:
+        Imagine a rectangle larger than the ellipses, double for loop,
+        Use fraction of area of sphere to calculate probability of angles.
+        Compare it to cos^2(theta)
+
+    Parameters of the telescope:
+        psi: 9.7
+
+2022/06/08
+    Normalize direction proportion*1e10
+    
