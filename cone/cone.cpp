@@ -10,7 +10,7 @@ using namespace std;
 #define m_0 105.6583755 //unit: MeV/c^2
 #define pi (atan(1)*4)
 
-ofstream output("cone.txt");
+ofstream output("cone_win.txt");
 
 /*
     Variable definitions:
@@ -70,20 +70,20 @@ void batch_calc(){
     double h, k = 0.0;
     h = L * sin(theta);
     int not_decayed = 0;
-    double spacing = 0.05;
+    double spacing = 0.01;
     for(double i = h - a; i < h + a; i+=spacing){
         for(double j = k - b; j < k + b; j+=spacing){
             if(pow((i-h) / a, 2) + pow((j-k) / b, 2)<=1.0){
                 double dist = sqrt(pow(i, 2) + pow(j, 2) + pow(L_v, 2));
                 Time = dist / v;
-                probability = 1e9 * scope_area / (pow(dist,2) * 2 * pi) * exp(-1.0 * Lambda * Time); //deriving survival probability
+                probability = 1e7 * scope_area / (pow(dist,2) * 2 * pi) * exp(-1.0 * Lambda * Time); //deriving survival probability
                 // cout<<probability<<"\n";
                 for(int n = 0; n<100; n++) if(montecarlo(probability))not_decayed++;
             }
         }
     }
     // cout<<(4 * a * b)<<"\n";
-    sim_prob = (double) not_decayed / (1600.0 * a * b);
+    sim_prob = (double) not_decayed / (400.0 * a * b);
     cout<<not_decayed<<" "<<sim_prob<<"\n";
     uncertainty = 1.0 / sqrt((double)not_decayed);
 }
