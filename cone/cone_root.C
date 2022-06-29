@@ -19,7 +19,7 @@
     gr2->SetLineColor(kBlue);
     mg->Add(gr1, "A*");
     mg->Add(gr2, "AL");
-    mg->SetTitle("0.05KM seperation, 100 per dot; Angle from Z-axis; Survival Percentage");
+    mg->SetTitle("0.01KM seperation, 10 per dot; Angle from Z-axis; Survival Percentage");
     // mg->GetXaxis()->SetTitle("Theta");
     // mg->GetYaxis()->SetTitle("Survival percentage"); 
     mg->Draw("A");
