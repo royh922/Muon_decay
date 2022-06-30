@@ -12,12 +12,11 @@ using namespace std;
 double rho = 1.29e-3, Z = 7.31719204, A = 28.9647, z = 1.0;
 double E_k, Beta, Gamma, v, L = 15.0e5;
 double dt = 1.0e-8, x = 0.0;
-double I = 85.7;
+double I = 85.7e-6;
+
+double C_0 = -10.6, X_0 = 1.742, X_1 = 4.28, m = 3.4, a = 0.1091;
 
 ofstream output("sim.txt");
-
-
-
 
 void energy_adjust(){
     Gamma = E_k / m_0 + 1; //deriving Gamma from kinetic energy
@@ -25,22 +24,39 @@ void energy_adjust(){
     v = Beta * c;
 }
 
+double delta_correc(double Beta, double Gamma){
+    double X = log10(Beta * Gamma);
+    if(X < X_0) return 0.0;
+    else if(X < X_1) return 4.6052 * X + C_0 + a * pow(X_1-X_0, m);
+    else return 4.6052 * X + C_0;
+}
+
+double shell_correc(double Beta, double Gamma){
+    double eta = Beta * Gamma;
+    return (0.422377 * pow(eta, -2.0) + 0.0304043 * pow(eta, -4.0) - 0.00038106 * pow(eta, -6.0)) * 1e6 * pow(I, 2.0)
+            +(3.850190 * pow(eta, -2.0) - 0.1667989 * pow(eta, -4.0) + 0.00157955 * pow(eta, -6.0)) * 1e9 * pow(I, 3.0);
+}
+
 double bethe_bloch(double W_max, double eta){
     double dx = v * dt;
-    double dE_k = coef * rho * (Z/A) * pow(z/Beta, 2) * (log(2 * m_e * pow(Gamma * v, 2) * W_max / pow(I, 2)) - 2 * pow(Beta, 2)) * dx;
-    E_k -= dE_k;
+    double dE_k = -1.0 * coef * rho * (Z/A) * pow(z/Beta, 2) * (log(2 * m_e * pow(Gamma * v, 2) * W_max / pow(I, 2)) - 2 * pow(Beta, 2)
+                    -delta_correc(Beta, Gamma) - 2 * shell_correc(Beta, Gamma) / Z) * dx;
+    // double dE_k = -1.0 * coef * rho * (Z/A) * pow(z/Beta, 2) * (log(2 * m_e * pow(Gamma * v, 2) * W_max / pow(I, 2)) - 2 * pow(Beta, 2)) * dx;
+    E_k += dE_k;
+    output<<dE_k / dx<<" ";
     return dx;
 }
+
 
 int main(){
     cout<<"Kinetic enrgy of muon(GeV): ";
     cin>>E_k;
     E_k *= 1000.0; //GeV to MeV
-    while(x<L || E_k < 0.0){
-        output<<x<<" "<<E_k<<" "<<v<<"\n";
+    while(x<L || E_k > 10.0){
         energy_adjust();
         double eta = Gamma * Beta;
         double W_max = 2.0 * m_e * pow(c, 2) * eta;
         x += bethe_bloch(W_max, eta);
+        output<<x<<" "<<E_k<<" "<<v<<"\n";
     }
 }
