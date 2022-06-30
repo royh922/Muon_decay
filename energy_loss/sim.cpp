@@ -16,7 +16,7 @@ double I = 85.7e-6;
 
 double C_0 = -10.6, X_0 = 1.742, X_1 = 4.28, m = 3.4, a = 0.1091;
 
-ofstream output("sim.txt");
+ofstream output("sim_with_correction.txt");
 
 void energy_adjust(){
     Gamma = E_k / m_0 + 1; //deriving Gamma from kinetic energy

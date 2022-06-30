@@ -3,8 +3,8 @@
     vector<double> x;
     vector<double> E_k;
     vector<double> v;
-    ifstream input("sim.txt");
-    ifstream input_2("sim_2.txt");
+    ifstream input("sim_with_correction.txt");
+    ifstream input_2("sim_without_correction.txt");
     double temp1, temp2, temp3, temp4;
     while(input>>temp1>>temp2>>temp3>>temp4){
         dE_kx.push_back(temp1 * -0.1);

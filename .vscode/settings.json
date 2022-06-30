@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "cone_root.C": "cpp"
+        "cone_root.C": "cpp",
+        "sim_root.C": "cpp"
     }
 }

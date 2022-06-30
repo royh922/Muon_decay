@@ -7,11 +7,17 @@
         Compare it to cos^2(theta)
 
     Parameters of the telescope:
-        psi: 9.7
+        psi: 9.7 degrees
 
 2022/06/08
     Normalize direction proportion*1e10
     
 2022/06/29
+
+2022/06/30
+    A/Z, use effective A, effective Z
+        Reference: A/Z = 4.99
+    Use step distance instead of step time
+    Time needs to be adjusted when calculating time elapsed.
 	
     
