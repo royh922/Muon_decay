@@ -10,7 +10,8 @@ using namespace std;
 #define m_0 105.6583755 //unit: MeV/c^2
 #define pi (atan(1)*4)
 
-ofstream output("cone_win.txt");
+ofstream output("cone.txt");
+ofstream test("test.dat");
 
 /*
     Variable definitions:
@@ -70,21 +71,21 @@ void batch_calc(){
     double h, k = 0.0;
     h = L * sin(theta);
     int not_decayed = 0;
-    double spacing = 0.01;
+    double spacing = 0.1;
     for(double i = h - a; i < h + a; i+=spacing){
         for(double j = k - b; j < k + b; j+=spacing){
-            if(pow((i-h) / a, 2) + pow((j-k) / b, 2)<=1.0){
-                double dist = sqrt(pow(i, 2) + pow(j, 2) + pow(L_v, 2));
+            test<<i<<" "<<j<<"||";
+            if(pow((i-h) / a, 2) + pow((j-k) / b, 2)<=1.0){ //check if in ellipse
+                double dist = sqrt(pow(i, 2) + pow(j, 2) + pow(L_v, 2)); 
                 Time = dist / v;
                 probability = 1e7 * scope_area / (pow(dist,2) * 2 * pi) * exp(-1.0 * Lambda * Time); //deriving survival probability
                 // cout<<probability<<"\n";
-                for(int n = 0; n<100; n++) if(montecarlo(probability))not_decayed++;
+                for(int n = 0; n<1; n++) if(montecarlo(probability))not_decayed++;
             }
         }
     }
-    // cout<<(4 * a * b)<<"\n";
-    sim_prob = (double) not_decayed / (400.0 * a * b);
-    cout<<not_decayed<<" "<<sim_prob<<"\n";
+    test<<"\n";
+    sim_prob = (double) not_decayed / (40.0 * a * b);
     uncertainty = 1.0 / sqrt((double)not_decayed);
 }
 
@@ -96,14 +97,15 @@ int main(){
     geometric_adjust();
     batch_calc();
     factor = sim_prob;
-    write(0.0);
+    // write(0.0);
     int n = 25; //number of batches to run
-    for(int i = 1; i<n; i++){
-        theta = (double)i / (n*2) * (pi - 2 * psi);
-        
+    n++;
+    for(int i = 1; i<n - 1; i++){
+        theta = (double)i / (n*2) * (pi - psi);
         geometric_adjust();
+        test<<i<<" "<<theta/pi * 180.0<<" "<<a<<" "<<b<<"\n";
         batch_calc();
-        write(theta);
+        // write(theta);
     }
     
     return 0;
