@@ -6,10 +6,16 @@ using namespace std;
 
 #define pi atan(1)*4
 
+void ad(int& g){
+    g++;
+}
+
 int main()
 {
-    for(double i = 0.0; i<100.0; i+=0.1){
-        cout<<i<<" ";
-    }
+    int g = 123;
+    af(&g);
+    cout<<g<<"\n";
+    ad(g);
+    cout<<g<<"\n";
     return 0;
 }

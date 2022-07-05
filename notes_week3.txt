@@ -1,0 +1,15 @@
+2022/07/06
+    Questions:
+        How to incorporate energy loss into montecarlo simulation?
+        Determining a new probability and then applying montecarlo would require a particle to pass compounded probability to survive.
+        I don't think that'll be correct
+    Current simulation steps:
+        Get initial energy level and set vertical distance,
+        Enter telescope energy for loop
+        Determine ellipse area, initiate muon point by point,
+        Determine initial direction and if it will enter the telescope,
+        Enter energy loss loop, using a set time step to calculate new energy and accumulated time.
+        Use previous step to calculate decay probability,
+        Using montecarlo simulation to determing if particle survives.
+        Loop until particle reaches telescope or dies or runs out of energy
+        

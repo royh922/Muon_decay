@@ -62,9 +62,7 @@ bool montecarlo(double prob){
     return (Random(eng)<=probability);
 }
 
-void write(double x){
-    output<<x/pi*180.0<<" "<<sim_prob<<" "<<uncertainty<<" "<<factor * pow(cos(x),2)<<"\n";
-}
+
 
 void batch_calc(){
     double h, k = 0.0;
