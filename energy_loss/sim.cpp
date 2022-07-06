@@ -9,7 +9,7 @@ using namespace std;
 #define pi (atan(1)*4)
 #define coef 0.1535 //MeVcm^2/g
 
-double rho = 1.29e-3, Z = 7.31719204, A = 28.9647, z = 1.0;
+double rho = 1.29e-3, Z = 14.83, A = 29.72, z = 1.0;
 double E_k, Beta, Gamma, v, L = 15.0e5;
 double dt = 1.0e-8, x = 0.0;
 double I = 85.7e-6;
