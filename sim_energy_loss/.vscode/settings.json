@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "root.C": "cpp",
+        "test_data.C": "cpp",
+        "deque": "cpp",
+        "string": "cpp",
+        "vector": "cpp"
+    }
+}

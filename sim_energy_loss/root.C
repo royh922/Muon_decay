@@ -1,5 +1,4 @@
 {
-    const int n = 25;
     vector <double> x;
     vector <double> sim_prob;
     vector <double> uncertainty;
@@ -13,8 +12,9 @@
         cos_sqr.push_back(d);
     }
     TMultiGraph *mg = new TMultiGraph();
-    TGraph *gr1 = new TGraphErrors(n, x, sim_prob, NULL, uncertainty);
-    TGraph *gr2 = new TGraph(n, x, cos_sqr);
+    // TGraph *gr1 = new TGraphErrors(x.size(), &x[0], &sim_prob[0], NULL, &uncertainty[0]);
+    TGraph *gr1 = new TGraph(x.size(), &x[0], &sim_prob[0]);
+    TGraph *gr2 = new TGraph(x.size(), &x[0], &cos_sqr[0]);
     auto c3 = new TCanvas("c3","c3");
     
     gr1->SetTitle("Simulated Probability");
