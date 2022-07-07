@@ -11,8 +11,8 @@ using namespace std;
 #define pi (atan(1)*4)
 #define coef 0.1535 //MeVcm^2/g
 
-double rho = 1.29e-3, Z = 14.51888746, A = 29.09833728, z = 1.0;
-double E_k, Beta, Gamma, v, L_v = 3.0e5, L;
+double Z = 14.51888746, A = 29.09833728, z = 1.0;
+double E_k, Beta, Gamma, v, L_v = 10.0e5, L;
 double dt = 1.0e-8, t;
 double a, b;
 double scope_area = 1.824146925e2;
@@ -48,7 +48,7 @@ double shell_correc(double Beta, double Gamma){
 
 double bethe_bloch(double W_max, double eta, double& E_temp){
     double dx = v * dt;
-    double dE_k = -1.0 * coef * rho * (Z/A) * pow(z/Beta, 2) * (log(2 * m_e * pow(Gamma * v, 2) * W_max / pow(I, 2)) - 2 * pow(Beta, 2)
+    double dE_k = -1.0 * coef * rho * (Z/A) * pow(z/Beta, 2) * (log(2 * m_e * pow(Gamma * Beta, 2) * W_max / pow(I, 2)) - 2 * pow(Beta, 2)
                     -delta_correc(Beta, Gamma) - 2 * shell_correc(Beta, Gamma) / Z) * dx;
     E_temp += dE_k;
     return dx;
@@ -70,23 +70,28 @@ bool montecarlo(double prob){
     return (Random(eng)<=prob);
 }
 
+double rho_calc(double h){
+    
+}
+
 void batch_calc(){
     double h, k = 0.0;
     h = L * sin(theta);
     int not_decayed = 0;
-    double spacing = 10000.0;
+    double spacing = 10000.0; //cm
     for(double i = h - a; i < h + a; i+=spacing){
         for(double j = k - b; j < k + b; j+=spacing){
             if(pow((i-h) / a, 2) + pow((j-k) / b, 2)<=1.0){
                 double t_total = 0.0;
-                double x = 0.0;
                 double E_temp = E_k;
                 double dist = sqrt(pow(i, 2) + pow(j, 2) + pow(L_v, 2));
                 double probability;
-                while(x < dist){
+                double x = dist;
+                while(x > 0){
                     energy_adjust(E_temp);
                     double eta = Gamma * Beta;
-                    double W_max = 2.0 * m_e * pow(c, 2) * eta;
+                    double W_max = 2.0 * m_e * eta;
+                    
                     x += bethe_bloch(W_max, eta, E_temp);
                     t_total += dt * Gamma;
                 }
