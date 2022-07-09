@@ -22,7 +22,7 @@ using namespace std;
 #define dt 1.0e-8
 
 double E_k;
-double batch_prob, uncertainty, batch_prob_unadjust;
+double batch_prob, batch_prob_unadjust;
 double factor;
 
 //energy loss porton
@@ -64,16 +64,8 @@ double bethe_bloch(double W_max, double Gamma, double Beta, double& E_temp, doub
 
 void geometric_adjust(double& a, double& b, double& L, double theta){
     L = L_v / cos(theta);
-    b = L / cos(theta) * tan(psi);
+    b = L * tan(psi);
     a = (tan(theta + psi) - tan(theta - psi)) * L_v / 2;
-}
-
-bool montecarlo(double prob){
-    //random number generation
-    random_device rd;
-    default_random_engine eng(rd());
-    uniform_real_distribution<> Random(0.0, 1.0);
-    return (Random(eng)<=prob);
 }
 
 double rho_calc(double h){//h in meters
@@ -86,52 +78,42 @@ void batch_calc(double theta){
     geometric_adjust(a, b, L, theta);
 
     h = L * sin(theta);
-    int not_decayed = 0, not_decayed_un = 0;
-    double spacing = 1000.0; //cm
 
+    double spacing = 10000.0; //cm
+    double probability = 0.0, unadjusted = 0.0;
     for(double i = h - a; i < h + a; i+=spacing){
         for(double j = k - b; j < k + b; j+=spacing){
             if(pow((i-h) / a, 2) + pow((j-k) / b, 2)<=1.0){
                 double t_total = 0.0;
                 double E_temp = E_k;
                 double Gamma, Beta, v;
-                double dist = sqrt(pow(i, 2) + pow(j, 2) + pow(L_v, 2));
-                double probability, unadjusted;
-                double x = dist;
-                double t = Gamma * tau;
                 energy_adjust(E_temp, Gamma, Beta, v);
-                unadjusted = 1.0e10 * scope_area / (pow(dist,2) * 2 * pi) * exp(-1.0 * (dist/v) / t);
+                double dist = sqrt(pow(i, 2) + pow(j, 2) + pow(L_v, 2));
+                double x = dist;
+                unadjusted += 1.0e10 * scope_area / (pow(dist,2) * 2 * pi) * exp(-1.0 * ((dist/v)/Gamma) / tau);
                 while(x > 0 && E_temp > 0){
                     energy_adjust(E_temp, Gamma, Beta, v);
                     double eta = Gamma * Beta;
                     double W_max = 2.0 * m_e * eta;
                     double height = cos(theta) * x / 100.0;
                     x -= bethe_bloch(W_max, Gamma, Beta, E_temp, rho_calc(height));
-                    t_total += dt;
-                    // t_total += dt * Gamma;
-                    t = Gamma * tau;
-                    // cout<<Gamma<<" "<<exp(-1.0 * t_total / t)<<"\n";
+                    t_total += (dt / Gamma);
                 }
                 if(E_temp<0) continue;
-                probability = 1.0e10 * scope_area / (pow(dist,2) * 2 * pi) * exp(-1.0 * t_total / t); //deriving survival probability
-                // cout<<probability<<" "<<t_total<<" "<<E_temp<<"\n";
-                // for(int n = 0; n<30; n++) if(montecarlo(probability)) not_decayed++;
-                for(int n = 0; n<100; n++){
-                    if(montecarlo(probability)) not_decayed++;
-                    if(montecarlo(probability)) not_decayed_un++;
-                }
+                probability += 1.0e10 * scope_area / (pow(dist,2) * 2 * pi) * exp(-1.0 * t_total / tau); //deriving survival probability
             }
         }
     }
-    batch_prob = (double) not_decayed / (a * b / 1.0e10);
-    batch_prob_unadjust = (double) not_decayed_un / (a * b / 1.0e10);
+    batch_prob = (double) probability / (a * b / 1.0e10);
+    batch_prob_unadjust = (double) unadjusted / (a * b / 1.0e10);
+    // batch_prob = (double) not_decayed / (a * b / 1.0e10);
+    // batch_prob_unadjust = (double) not_decayed_un / (a * b / 1.0e10);
     if(theta == 0.0) factor = batch_prob;
-    uncertainty = 1.0 / sqrt((double)not_decayed);
 }
 
 
 int main(){
-    ofstream output("output_1.txt");
+    ofstream output("output_2.txt");
     cout<<"Kinetic enrgy of muon(GeV): ";
     double temp;
     cin>>temp;
@@ -142,7 +124,7 @@ int main(){
         theta = (double)i / (n*2) * (pi - 2 * psi);
         batch_calc(theta);
         cout<<i<<" "<<batch_prob<<" "<<batch_prob_unadjust<<"\n";
-        output<<theta/pi*180.0<<" "<<batch_prob<<" "<<batch_prob_unadjust<<" "<<uncertainty<<" "<<factor * pow(cos(theta),2)<<"\n";
+        output<<theta/pi*180.0<<" "<<batch_prob<<" "<<batch_prob_unadjust<<" "<<" "<<factor * pow(cos(theta),2)<<"\n";
     }
     output.close();
 }
