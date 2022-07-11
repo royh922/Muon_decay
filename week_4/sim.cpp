@@ -10,6 +10,8 @@
 #include <random>
 using namespace std;
 
+#define output_file "dump.txt" //RAW DATA OUTPUT FILENAME. MUST CHANGE TO NOT OVERWRITE!
+
 #define c 29979245800 //unit: cm/s
 #define m_0 105.6583755 //unit: MeV/c^2
 #define m_e 0.51099895 //unit: MeV/c^2
@@ -17,7 +19,7 @@ using namespace std;
 #define pi (atan(1)*4)
 #define coef 0.1535 //MeVcm^2/g
 #define scope_area 1.824146925e2 //cm^2
-#define psi (9.7/180 * pi)
+#define psi (pi * 9.7/180)
 #define L_v 10.0e5 //cm
 #define dt 1.0e-8
 
@@ -80,22 +82,22 @@ void batch_calc(double theta){
     double a, b, L;
     geometric_adjust(a, b, L, h, theta);
 
-    // ofstream test("test.txt");
+    ofstream test("test.txt");
 
-    double spacing = 10000.0; //cm
+    double spacing = 50000.0; //cm
     double probability = 0.0, unadjusted = 0.0;
     for(double i = h - a; i < h + a; i+=spacing){
         for(double j = k - b; j < k + b; j+=spacing){
             double dist = sqrt(pow(i, 2) + pow(j, 2) + pow(L_v, 2));
             if(pow((i-h) / a, 2) + pow((j-k) / b, 2)<=1.0){
             // if(( (i * L * sin(theta) + L_v * L_v) / (L*dist) ) > cos(psi)){
-                // test<<i<<" "<<j<<"\n";
-                double t_total = 0.0;
+                test<<i<<" "<<j<<"\n";
+                /* double t_total = 0.0;
                 double E_temp = E_k;
                 double Gamma, Beta, v;
                 energy_adjust(E_temp, Gamma, Beta, v);
                 double x = dist;
-                unadjusted += 1.0e10 * scope_area / (pow(dist,2) * 2 * pi) * exp(-1.0 * ((dist/v)/Gamma) / tau);
+                unadjusted += scope_area / (pow(dist,2) * 2 * pi) * exp(-1.0 * ((dist/v)/Gamma) / tau);
                 while(x > 0 && E_temp > 0){
                     energy_adjust(E_temp, Gamma, Beta, v);
                     double eta = Gamma * Beta;
@@ -105,7 +107,7 @@ void batch_calc(double theta){
                     t_total += (dt / Gamma);
                 }
                 if(E_temp<0) continue;
-                probability += 1.0e10 * scope_area / (pow(dist,2) * 2 * pi) * exp(-1.0 * t_total / tau); //deriving survival probability
+                else probability += scope_area / (pow(dist,2) * 2 * pi) * exp(-1.0 * t_total / tau); */ //deriving survival probability
             }
         }
     }
@@ -117,18 +119,18 @@ void batch_calc(double theta){
 }
 
 int main(){
-    ofstream output("method_0_3.txt");
+    // ofstream output(output_file);
     cout<<"Kinetic enrgy of muon(GeV): ";
     double temp;
     cin>>temp;
     E_k = temp * 1000.0; //GeV to MeV
     int n = 25; //number of batches to run
     double theta;
-    for(int i = 0; i<n; i++){
+    for(int i = 17; i<18; i++){
         theta = (double)i / (n*2) * (pi - 2 * psi);
         batch_calc(theta);
         cout<<i<<" "<<batch_prob<<" "<<batch_prob_unadjust<<"\n";
-        output<<theta/pi*180.0<<" "<<batch_prob<<" "<<batch_prob_unadjust<<" "<<" "<<factor * pow(cos(theta),2)<<"\n";
+        // output<<theta/pi*180.0<<" "<<batch_prob<<" "<<batch_prob_unadjust<<" "<<" "<<factor * pow(cos(theta),2)<<"\n";
     }
-    output.close();
+    // output.close();
 }
