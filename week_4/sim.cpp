@@ -84,7 +84,7 @@ void batch_calc(double theta){
 
     ofstream test("test.txt");
 
-    double spacing = 50000.0; //cm
+    double spacing = 5000.0; //cm
     double probability = 0.0, unadjusted = 0.0;
     for(double i = h - a; i < h + a; i+=spacing){
         for(double j = k - b; j < k + b; j+=spacing){
@@ -127,7 +127,7 @@ int main(){
     int n = 25; //number of batches to run
     double theta;
     for(int i = 17; i<18; i++){
-        theta = (double)i / (n*2) * (pi - 2 * psi);
+        theta = (double)i / n * (pi / 2 - 2 * psi);
         batch_calc(theta);
         cout<<i<<" "<<batch_prob<<" "<<batch_prob_unadjust<<"\n";
         // output<<theta/pi*180.0<<" "<<batch_prob<<" "<<batch_prob_unadjust<<" "<<" "<<factor * pow(cos(theta),2)<<"\n";
