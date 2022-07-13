@@ -25,8 +25,8 @@ using namespace std;
 #define scope_area 1.824146925e2 //cm^2
 #define psi (pi * 9.7/180)
 #define dt 1.0e-8
-#define L_v 15.0e5 //cm STARTING ALTITUDE 
-#define spacing 15000.0 //cm
+#define L_v 10.0e5 //cm STARTING ALTITUDE 
+#define spacing 20000.0 //cm
 
 // double E_k;
 double batch_prob[5];
@@ -111,7 +111,7 @@ void batch_calc(double theta){
                 for(int cnt = 0; cnt<5; cnt++){
                     double t_total = 0.0;
                     double x = dist;
-                    double E_temp = 3000.0 + cnt * 1000.0; //initial kinetic energy
+                    double E_temp = 3000.0 + cnt * 2000.0; //initial kinetic energy
                     double Gamma, Beta, v;
                     energy_adjust(E_temp, Gamma, Beta, v);
                     while(x > 0 && E_temp > 0){
