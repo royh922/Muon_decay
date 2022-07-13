@@ -6,7 +6,7 @@
     vector <double> sim_prob3;
     vector <double> sim_prob4;
     vector <double> cos_sqr;
-    ifstream input("15km.txt");
+    ifstream input("test.txt");
     double temp[11];
     for(int i = 0; i<20; i++){
         for(int j = 0; j<11; j++){
@@ -61,7 +61,7 @@
     mg->Add(gr4_1, "AL");
     mg->Add(gr5_1, "AL");
 
-    mg->SetTitle("0.2KM separation, 15KM altitude; Angle from Z-axis; Hit Percentage"); 
+    mg->SetTitle("0.25KM separation, 15KM altitude; Angle from Z-axis; Hit Percentage"); 
     mg->Draw("A");
     
     c3->BuildLegend();
