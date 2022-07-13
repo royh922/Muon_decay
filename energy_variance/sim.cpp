@@ -25,8 +25,8 @@ using namespace std;
 #define scope_area 1.824146925e2 //cm^2
 #define psi (pi * 9.7/180)
 #define dt 1.0e-8
-#define L_v 10.0e5 //cm STARTING ALTITUDE 
-#define spacing 20000.0 //cm
+#define L_v 15.0e5 //cm STARTING ALTITUDE 
+#define spacing 25000.0 //cm
 
 // double E_k;
 double batch_prob[5];
@@ -119,7 +119,8 @@ void batch_calc(double theta){
                         double eta = Gamma * Beta;
                         double W_max = 2.0 * m_e * eta;
                         double height = cos_alpha * x / 100.0; //PROBLEM HERE
-                        x -= bethe_bloch(W_max, Gamma, Beta, E_temp, rho_calc(height));
+                        // x -= bethe_bloch(W_max, Gamma, Beta, E_temp, rho_calc(height));
+                        x -= bethe_bloch(W_max, Gamma, Beta, E_temp, rho_calc(0.0012));
                         t_total += (dt / Gamma);
                     }
                     if(E_temp>0) probability[cnt] += scope_area * cos_delta / (pow(dist,2) * 2 * pi) * exp(-1.0 * t_total / tau); //deriving survival probability
