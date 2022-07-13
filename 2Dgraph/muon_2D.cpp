@@ -30,11 +30,10 @@ double factor;
 void calc(){
     Gamma = E_k * 1e3 / m_0 + 1; //deriving Gamma from kinetic energy
     t = Gamma * tau; //adjusting lifetime using Gamma
-    Lambda = 1 / t;
     Beta = sqrt(1-(1/pow(Gamma, 2))); //deriving Beta from Gamma
     v = C * Beta;
     Time = L * 1e3 /v;
-    probability = exp(-1.0 * Lambda * Time); //deriving survival probability
+    probability = exp(-1.0 * Time / Gamma / tau); //deriving survival probability
 }
 
 void montecarlo(int N){
@@ -73,13 +72,12 @@ int main(){
 
     int n = 25; //number of batches to run
     for(int i = 0; i<n; i++){
-        L = L_v/cos((double)i / (n*2) * pi);
+        L = L_v/cos((double)i / n * (pi / 2));
         calc();
         //printf("Gamma = %lf, Travel time = %lf, Lambda = %lf, Adjusted tau = %lf\n", Gamma, Time, Lambda, t);
         //cout<<"Theoretical probability is: "<<probability<<"\n\n";
         montecarlo(N);
-        write((double)i / (n*2) * pi);
-        cout<<uncertainty;
+        write((double)i / n * (pi / 2));
     }
     
     return 0;

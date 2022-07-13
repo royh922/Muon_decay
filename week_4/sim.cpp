@@ -4,6 +4,12 @@
     Summer 2022
 */
 
+/*
+    Variation in energy, variation in altitude
+    3.5 GeV Std, 9,1 GeV Mean;
+    Chi^2
+*/
+
 #include <iostream>
 #include <cmath>
 #include <fstream>
@@ -12,7 +18,7 @@ using namespace std;
 
 #define output_file "dump.txt" //RAW DATA OUTPUT FILENAME. MUST CHANGE TO NOT OVERWRITE!
 
-#define c 29979245800 //unit: cm/s
+#define c 29979245800.0 //unit: cm/s
 #define m_0 105.6583755 //unit: MeV/c^2
 #define m_e 0.51099895 //unit: MeV/c^2
 #define tau 2.1969811e-6 //unit: s
@@ -20,12 +26,21 @@ using namespace std;
 #define coef 0.1535 //MeVcm^2/g
 #define scope_area 1.824146925e2 //cm^2
 #define psi (pi * 9.7/180)
-#define L_v 10.0e5 //cm
 #define dt 1.0e-8
+#define L_v 15.0e5 //cm STARTING ALTITUDE 
 
-double E_k;
-double batch_prob, batch_prob_unadjust;
+// double E_k;
+double batch_prob;
 double factor;
+
+//normal distribution generator
+double normal_dis(){
+    //random number generation
+    random_device rd;
+    default_random_engine eng(rd());
+    normal_distribution<double> Random(9.0, 2.0);
+    return Random(eng);
+}
 
 //energy loss porton
 
@@ -81,56 +96,57 @@ void batch_calc(double theta){
     double h, k = 0.0;
     double a, b, L;
     geometric_adjust(a, b, L, h, theta);
+    // ofstream test("test.txt");
 
-    ofstream test("test.txt");
-
-    double spacing = 5000.0; //cm
+    double spacing = 15000.0; //cm
     double probability = 0.0, unadjusted = 0.0;
     for(double i = h - a; i < h + a; i+=spacing){
         for(double j = k - b; j < k + b; j+=spacing){
-            double dist = sqrt(pow(i, 2) + pow(j, 2) + pow(L_v, 2));
             if(pow((i-h) / a, 2) + pow((j-k) / b, 2)<=1.0){
             // if(( (i * L * sin(theta) + L_v * L_v) / (L*dist) ) > cos(psi)){
-                test<<i<<" "<<j<<"\n";
-                /* double t_total = 0.0;
-                double E_temp = E_k;
+                // test<<i<<" "<<j<<"\n";
+                double dist = sqrt(pow(i, 2) + pow(j, 2) + pow(L_v, 2));
+                double t_total = 0.0;
+                double E_temp = 3000.0; //initial kinetic energy
+                // double E_temp = normal_dis() * 1000.0;
+                double cos_alpha = L_v / dist; //angle between line of particle and zenith
+                double cos_delta = (i * L * sin(theta) + L_v * L_v) / (L*dist); //angle between line of particle and scintillator
+
                 double Gamma, Beta, v;
                 energy_adjust(E_temp, Gamma, Beta, v);
                 double x = dist;
-                unadjusted += scope_area / (pow(dist,2) * 2 * pi) * exp(-1.0 * ((dist/v)/Gamma) / tau);
                 while(x > 0 && E_temp > 0){
                     energy_adjust(E_temp, Gamma, Beta, v);
                     double eta = Gamma * Beta;
                     double W_max = 2.0 * m_e * eta;
-                    double height = cos(theta) * x / 100.0;
+                    double height = cos_alpha * x / 100.0; //PROBLEM HERE
+                    // x -= bethe_bloch(W_max, Gamma, Beta, E_temp, rho_calc(height));
                     x -= bethe_bloch(W_max, Gamma, Beta, E_temp, rho_calc(height));
                     t_total += (dt / Gamma);
                 }
                 if(E_temp<0) continue;
-                else probability += scope_area / (pow(dist,2) * 2 * pi) * exp(-1.0 * t_total / tau); */ //deriving survival probability
+                else probability += scope_area * cos_delta / (pow(dist,2) * 2 * pi) * exp(-1.0 * t_total / tau); //deriving survival probability
             }
         }
     }
-    // batch_prob = (double) probability / (a * b / 1.0e10);
-    // batch_prob_unadjust = (double) unadjusted / (a * b / 1.0e10);
     batch_prob = probability;
-    batch_prob_unadjust = unadjusted;
     if(theta == 0.0) factor = batch_prob;
 }
 
 int main(){
-    // ofstream output(output_file);
-    cout<<"Kinetic enrgy of muon(GeV): ";
-    double temp;
-    cin>>temp;
-    E_k = temp * 1000.0; //GeV to MeV
+    ofstream output(output_file);
+    // cout<<"Kinetic enrgy of muon(GeV): ";
+    // double temp;
+    // cin>>temp;
+    // E_k = temp * 1000.0; //GeV to MeV
     int n = 25; //number of batches to run
     double theta;
-    for(int i = 17; i<18; i++){
+    for(int i = 0; i<n; i++){
         theta = (double)i / n * (pi / 2 - 2 * psi);
+        cout<<theta / pi * 180<<"\n";
         batch_calc(theta);
-        cout<<i<<" "<<batch_prob<<" "<<batch_prob_unadjust<<"\n";
-        // output<<theta/pi*180.0<<" "<<batch_prob<<" "<<batch_prob_unadjust<<" "<<" "<<factor * pow(cos(theta),2)<<"\n";
+        cout<<i<<" "<<batch_prob<<"\n";
+        output<<theta/pi*180.0<<" "<<batch_prob<<" "<<factor * pow(cos(theta),2)<<"\n";
     }
-    // output.close();
+    output.close();
 }

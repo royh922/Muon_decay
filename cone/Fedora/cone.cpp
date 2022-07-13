@@ -23,7 +23,7 @@ ofstream test("test.dat");
     Beta = v/c
     Lamda = decay constant = 1/t
 */
-double L_v = 15.0;
+double L_v = 10.0;
 double L, t, v, E_k, Time, Beta, Gamma, Lambda;
 double probability, sim_prob, uncertainty;
 double factor;
