@@ -6,7 +6,7 @@
     vector <double> sim_prob3;
     vector <double> sim_prob4;
     vector <double> cos_sqr;
-    ifstream input("test.txt");
+    ifstream input("15km_2.txt");
     double temp[11];
     for(int i = 0; i<20; i++){
         for(int j = 0; j<11; j++){
@@ -47,7 +47,6 @@
     gr3->SetTitle("Initial_KE = 7 GeV"); gr3->SetMarkerStyle(8); gr3->SetMarkerColor(3);
     gr4->SetTitle("Initial_KE = 9 GeV"); gr4->SetMarkerStyle(8); gr4->SetMarkerColor(4);
     gr5->SetTitle("Initial_KE = 11 GeV"); gr5->SetMarkerStyle(8); gr5->SetMarkerColor(6);
-
     
     mg->Add(gr1, "AP");
     mg->Add(gr2, "AP");
