@@ -119,8 +119,7 @@ void batch_calc(double theta){
                         double eta = Gamma * Beta;
                         double W_max = 2.0 * m_e * eta;
                         double height = cos_alpha * x / 100.0; //PROBLEM HERE
-                        // x -= bethe_bloch(W_max, Gamma, Beta, E_temp, rho_calc(height));
-                        x -= bethe_bloch(W_max, Gamma, Beta, E_temp, rho_calc(0.0012));
+                        x -= bethe_bloch(W_max, Gamma, Beta, E_temp, rho_calc(height));
                         t_total += (dt / Gamma);
                     }
                     if(E_temp>0) probability[cnt] += scope_area * cos_delta / (pow(dist,2) * 2 * pi) * exp(-1.0 * t_total / tau); //deriving survival probability

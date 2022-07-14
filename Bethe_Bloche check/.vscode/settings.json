@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "root.C": "cpp",
+        "sealevel.C": "cpp",
+        "sim_root.C": "cpp"
+    }
+}
