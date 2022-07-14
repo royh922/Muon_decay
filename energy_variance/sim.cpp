@@ -114,7 +114,7 @@ void batch_calc(double theta){
                     double E_temp = 3000.0 + cnt * 2000.0; //initial kinetic energy
                     double Gamma, Beta, v;
                     energy_adjust(E_temp, Gamma, Beta, v);
-                    while(x > 0 && E_temp > 0){
+                    while(x > 0 && Beta * Gamma > 0.1 && E_temp > 0){
                         energy_adjust(E_temp, Gamma, Beta, v);
                         double eta = Gamma * Beta;
                         double W_max = 2.0 * m_e * eta;
@@ -138,10 +138,7 @@ int main(){
     cout<<"Filename of output data: ";
     cin>>filename;
     ofstream output(filename);
-    // cout<<"Kinetic enrgy of muon(GeV): ";
-    // double temp;
-    // cin>>temp;
-    // E_k = temp * 1000.0; //GeV to MeV
+
     int n = 20; //number of batches to run
     double theta;
     for(int i = 0; i<n; i++){
