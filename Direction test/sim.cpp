@@ -3,7 +3,7 @@
 #include<fstream>
 using namespace std;
 
-#define R 100
+#define R 2000
 #define spacing 1
 #define pi (atan(1)*4)
 
@@ -18,8 +18,9 @@ int main(){
             for(int k = 0; k < R; k += spacing){
                 double dist = sqrt((pow(i, 2) + pow(j, 2) + pow(k, 2))); 
                 if(dist < R){
-                    double weight = 1 / pow(dist, 2.0);
-                    int degree = acos((double)k * 10.0 / (dist * 10.0)) / pi * 180.0;
+                    double dot_product = (double)k * 10.0 / (dist * 10.0);
+                    int degree = acos(dot_product) / pi * 180.0;
+                    double weight = 1 / pow(dist, 2.0) * dot_product;
                     if(degree < 0 || degree > 90) continue;
                     hits[degree] += weight;
                 }

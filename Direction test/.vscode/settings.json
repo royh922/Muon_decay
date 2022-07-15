@@ -2,6 +2,10 @@
     "files.associations": {
         "test.C": "cpp",
         "cone_root.C": "cpp",
-        "root.C": "cpp"
+        "root.C": "cpp",
+        "cmath": "cpp",
+        "fit.C": "cpp",
+        "ex.C": "cpp",
+        "macro8.C": "cpp"
     }
 }
