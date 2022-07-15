@@ -70,7 +70,7 @@ void calc(double E_init, double altitude){
     while(x > 0 && Beta * Gamma > 0.1 && E_temp > 0){
         energy_adjust(E_temp, Gamma, Beta, v);
         double eta = Gamma * Beta;
-        double W_max = 2.0 * m_e * eta;
+        double W_max = 2.0 * m_e * pow(eta, 2.0);
         double height = x / 100.0; 
         x -= bethe_bloch(W_max, Gamma, Beta, E_temp, rho_calc(height));
         // x -= bethe_bloch(W_max, Gamma, Beta, E_temp, rho_calc(0.0));

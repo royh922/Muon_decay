@@ -2,6 +2,10 @@
     "files.associations": {
         "root.C": "cpp",
         "sealevel.C": "cpp",
-        "sim_root.C": "cpp"
+        "sim_root.C": "cpp",
+        "2DGraph.C": "cpp",
+        "vector": "cpp",
+        "deque": "cpp",
+        "string": "cpp"
     }
 }
