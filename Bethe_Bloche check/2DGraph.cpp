@@ -53,8 +53,8 @@ int main(){
 
     double Gamma, Beta, dEdx, eta;
     double W_max;
-    for(double KE = 10.0; KE < 10000.0; KE += 100.0){
-        for(double rho = 0.4; rho < 2.0; rho += 0.02){
+    for(double KE = 10.0; KE < 10000.0; KE += 200.0){
+        for(double rho = 0.4; rho < 2.0; rho += 0.05){
             energy_adjust(KE, Gamma, Beta);
             eta = Gamma * Beta;
             W_max = 2.0 * m_e * pow(eta, 2.0);
