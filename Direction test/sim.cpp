@@ -19,14 +19,15 @@ int main(){
                 double dist = sqrt((pow(i, 2) + pow(j, 2) + pow(k, 2))); 
                 if(dist < R){
                     double dot_product = (double)k * 10.0 / (dist * 10.0);
-                    int degree = acos(dot_product) / pi * 180.0;
-                    double weight = 1 / pow(dist, 2.0) * dot_product;
+                    int degree = round(acos(dot_product) / pi * 180.0);
                     if(degree < 0 || degree > 90) continue;
+                    double weight = 1 / pow(dist, 2.0) * dot_product / sin((double)degree / 180.0 * pi);
                     hits[degree] += weight;
                 }
             }
         }
     }
+    // for(int i = 1; i<91; i++) hits[i] /= sin((double) i / 180.0 * pi);
     for(int i = 0; i<91; i++) output<<hits[i]<<"\n";
 
     output.close();
