@@ -15,7 +15,6 @@ using namespace std;
 #define m_e 0.51099895 //unit: MeV/c^2
 #define tau 2.1969811e-6 //unit: s
 #define pi (atan(1)*4)
-#define coef 0.1535 //MeVcm^2/g
 #define scope_area 1.824146925e2 //cm^2
 #define psi (pi * 9.7/180)
 #define dt 1.0e-8
@@ -35,9 +34,10 @@ double factor[5];
 
 //energy loss porton
 
-void energy_adjust(double E_temp, double& Gamma, double& Beta, double& v){
+void energy_adjust(double E_temp, double& Gamma, double& Beta, double& eta, double& v){
     Gamma = E_temp / m_0 + 1; //deriving Gamma from kinetic energy
     Beta = sqrt(1-(1/pow(Gamma, 2))); //deriving Beta from Gamma
+    eta = Gamma * Beta;
     v = Beta * c;
 }
 
@@ -57,6 +57,7 @@ double shell_correc(double Beta, double Gamma){
 }
 
 double bethe_bloch(double W_max, double Gamma, double Beta, double& E_temp, double rho){
+    double coef = 0.1535; //MeVcm^2/g
     double I = 85.7e-6;
     double Z = 14.51888746, A = 29.09833728, z = 1.0;
     double eta = Gamma * Beta;
@@ -95,27 +96,25 @@ void batch_calc(double theta){
             if(pow((i-h) / a, 2) + pow((j-k) / b, 2)<=1.0){
 
                 double dist = sqrt(pow(i, 2) + pow(j, 2) + pow(L_v, 2));
-                double cos_alpha = L_v / dist; //angle between line of particle and zenith
+                double cos_theta = L_v / dist; //angle between line of particle and zenith
                 double cos_delta = (i * L * sin(theta) + L_v * L_v) / (L*dist); //angle between line of particle and scintillator
                 
                 for(int cnt = 0; cnt<5; cnt++){
                     double E_temp = 4000.0 + cnt * 2000.0; //initial kinetic energy
                     double t_total = 0.0;
-                    double Gamma, Beta, v;
+                    double Gamma, Beta, eta, v;
 
-                    energy_adjust(E_temp, Gamma, Beta, v);
+                    energy_adjust(E_temp, Gamma, Beta, eta, v);
                     double x = dist;
-                    double eta = Gamma * Beta;
                     while(x > 0 && eta > 0.1){
-                        energy_adjust(E_temp, Gamma, Beta, v);
+                        energy_adjust(E_temp, Gamma, Beta, eta, v);
                         double W_max = 2.0 * m_e * pow(eta, 2.0);
-                        double height = cos_alpha * x / 100.0; //PROBLEM HERE
+                        double height = cos_theta * x / 100.0; //PROBLEM HERE
                         x -= bethe_bloch(W_max, Gamma, Beta, E_temp, rho_calc(height));
                         t_total += (dt / Gamma);
-                        eta = Gamma * Beta;
                     }
                     if(eta < 0.1) continue;
-                    else probability[cnt] += 1.0e9 * cos_delta * cos_alpha * exp(-1.0 * t_total / tau) / pow(dist, 2.0); //deriving survival probability
+                    else probability[cnt] += 1.0e9 * cos_delta * cos_theta * exp(-1.0 * t_total / tau) / pow(dist, 2.0); //deriving survival probability
                 }
 
             }
