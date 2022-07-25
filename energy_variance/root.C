@@ -60,7 +60,7 @@
     mg->Add(gr4_1, "AL");
     mg->Add(gr5_1, "AL");
 
-    mg->SetTitle("0.25KM separation, 15KM altitude; Angle from Z-axis; Hit Percentage"); 
+    mg->SetTitle("0.25KM separation, 15KM altitude; #Theta Angle from Z-axis; Hit Percentage"); 
     mg->Draw("A");
     
     c3->BuildLegend();

@@ -32,12 +32,13 @@
     auto gr4_1 = new TGraph(); gr4_1->SetLineColor(4);
     auto gr5_1 = new TGraph(); gr5_1->SetLineColor(6);
     
+    const double n = 2.0;
     for(int i = 0; i<20; i++){
-        gr1_1->SetPoint(i, x[i], sim_prob0[0] * pow(cos(x[i] / 180.0 * TMath::Pi()), 2.0));
-        gr2_1->SetPoint(i, x[i], sim_prob1[0] * pow(cos(x[i] / 180.0 * TMath::Pi()), 2.0));
-        gr3_1->SetPoint(i, x[i], sim_prob2[0] * pow(cos(x[i] / 180.0 * TMath::Pi()), 2.0));
-        gr4_1->SetPoint(i, x[i], sim_prob3[0] * pow(cos(x[i] / 180.0 * TMath::Pi()), 2.0));
-        gr5_1->SetPoint(i, x[i], sim_prob4[0] * pow(cos(x[i] / 180.0 * TMath::Pi()), 2.0));
+        gr1_1->SetPoint(i, x[i], sim_prob0[0] * pow(cos(x[i] / 180.0 * TMath::Pi()), n));
+        gr2_1->SetPoint(i, x[i], sim_prob1[0] * pow(cos(x[i] / 180.0 * TMath::Pi()), n));
+        gr3_1->SetPoint(i, x[i], sim_prob2[0] * pow(cos(x[i] / 180.0 * TMath::Pi()), n));
+        gr4_1->SetPoint(i, x[i], sim_prob3[0] * pow(cos(x[i] / 180.0 * TMath::Pi()), n));
+        gr5_1->SetPoint(i, x[i], sim_prob4[0] * pow(cos(x[i] / 180.0 * TMath::Pi()), n));
     }
     auto c3 = new TCanvas("c3","c3");
     

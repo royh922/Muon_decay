@@ -18,7 +18,7 @@ using namespace std;
 #define scope_area 1.824146925e2 //cm^2
 #define psi (pi * 9.7/180)
 #define dt 1.0e-8
-#define L_v 15.0e5 //cm STARTING ALTITUDE 
+#define L_v 20.0e5 //cm STARTING ALTITUDE 
 
 double batch_prob[5];
 double factor[5];
