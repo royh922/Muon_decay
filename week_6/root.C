@@ -6,7 +6,7 @@
     vector <double> sim_prob3;
     vector <double> sim_prob4;
     vector <double> cos_sqr;
-    ifstream input("output_2.txt");
+    ifstream input("output.txt");
     double temp[11];
     for(int i = 0; i<20; i++){
         for(int j = 0; j<11; j++){
@@ -59,6 +59,8 @@
     mg->Add(gr3_1, "AL");
     mg->Add(gr4_1, "AL");
     mg->Add(gr5_1, "AL");
+
+    gPad->SetLogy();
 
     mg->SetTitle("0.2KM separation;Angle from Z-axis (#theta); Hits"); 
     mg->Draw("A");

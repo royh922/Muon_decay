@@ -1,5 +1,8 @@
 {
     "files.associations": {
-        "root.C": "cpp"
+        "root.C": "cpp",
+        "root_2.C": "cpp",
+        "fit.C": "cpp",
+        "cmath": "cpp"
     }
 }
