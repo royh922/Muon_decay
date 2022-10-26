@@ -3,7 +3,7 @@
     vector <double> sim_prob;
     vector <double> no_loss;
 
-    ifstream input("n=4.txt");
+    ifstream input("final_no_density.dat");
     
     double a,b,c;
     while(input>>a>>b>>c){
@@ -46,7 +46,7 @@
 
     // gPad->SetLogy();
 
-    mg->SetTitle("0.1KM separation, n=4, 12.5KM, cos^{[0]}(#theta) fit;Angle from Z-axis (#theta); Normalized Hits"); 
+    mg->SetTitle("0.1KM separation, 12.5KM, cos^{[0]}(#theta) fit;Angle from Z-axis (#theta); Normalized Hits"); 
     mg->Draw("A");
     
     c3->BuildLegend();

@@ -77,7 +77,7 @@ void batch_calc(double theta){
     double spacing = 10000.0; //cm
     double probability = 0.0;
     double probability_noloss = 0.0;
-        
+    
     double h, k = 0.0;
     double a, b, L;
     geometric_adjust(a, b, L, h, theta);
@@ -91,34 +91,45 @@ void batch_calc(double theta){
                 double cos_theta = L_v / dist; //angle between line of particle and zenith
                 double cos_delta = (i * L * sin(theta) + L_v * L_v) / (L*dist); //angle between line of particle and scintillator
                 const double N = 50.0;
-                for(int cnt = 0; cnt<N; cnt++){
+                /* for(int cnt = 0; cnt<N; cnt++){
                     double E_temp = 1000.0 + (double)cnt * (100000.0 - 1000.0) / N; //initial kinetic energy
                     double t_total = 0.0;
                     double Gamma, Beta, eta, v;
-                    double adjust = 1e25 * pow(E_temp, -4.0); //energy distribution
+                    double adjust = 1e25 * pow(E_temp, -3.0); //energy distribution
                     double x = dist;
 
                     energy_adjust(E_temp, Gamma, Beta, eta, v);
-                    double t_noloss = dist / v / Gamma;
+                    // double t_noloss = dist / v / Gamma;
 
                     do{
                         energy_adjust(E_temp, Gamma, Beta, eta, v);
                         double W_max = 2.0 * m_e * pow(eta, 2.0);
                         double height = cos_theta * x / 100.0; 
-                        x -= bethe_bloch(W_max, Gamma, Beta, E_temp, rho_calc(height));
+                        x -= bethe_bloch(W_max, Gamma, Beta, E_temp, rho_calc(0));
                         t_total += (dt / Gamma);
                     }while(x > 0 && eta > 0.1 && E_temp > 0.0);
                     
                     if(eta < 0.1 || E_temp < 0.0) continue;
                     adjust /= (1.0 + E_temp / 8540.0);
                     
-                    probability_noloss += adjust * cos_theta * cos_delta * exp(-1.0 * t_noloss / tau) / pow(dist, 2.0);
+                    // probability_noloss += adjust * cos_theta * cos_delta * exp(-1.0 * t_noloss / tau) / pow(dist, 2.0);
                     probability += adjust * cos_theta * cos_delta * exp(-1.0 * t_total / tau) / pow(dist, 2.0); //deriving survival probability
-                }
+                } */
+                double E_temp = 6000.0; //initial kinetic energy
+                double t_total = 0.0;
+                double Gamma, Beta, eta, v;
+                double x = dist;
+
+                energy_adjust(E_temp, Gamma, Beta, eta, v);
+
+                t_total = (dist / v) / Gamma;
+                
+                // probability_noloss += adjust * cos_theta * cos_delta * exp(-1.0 * t_noloss / tau) / pow(dist, 2.0);
+                probability += exp(-1.0 * t_total / tau); //deriving survival probability
+
             }
         }
     }
-    no_loss = probability_noloss;
     batch_prob = probability;
 }
 

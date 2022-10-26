@@ -6,6 +6,7 @@
         "test_data.C": "cpp",
         "iosfwd": "cpp",
         "sim_root.C": "cpp",
-        "root.C": "cpp"
+        "root.C": "cpp",
+        "root_2.C": "cpp"
     }
 }
